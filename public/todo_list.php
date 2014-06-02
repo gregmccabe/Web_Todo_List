@@ -80,7 +80,7 @@ if (isset($saved_filename)) {
 		<ul>
 
 		  <? foreach ($todos_array as $key => $value) : ?>
-        	<li><?= "{$value} <a href=\"todo_list.php?removeIndex={$key}\">Remove Item</a>"; ?></li>
+        	<li><?= htmlspecialchars(strip_tags($value)); ?><a href="todo_list.php?removeIndex=<?= $key?>">Remove Item</a></li>
   			<? endforeach; ?>
 
 		</ul>
