@@ -3,7 +3,7 @@
 <?php
 var_dump($_FILES);
 
-$filename = 'data/title.txt';//$filename is a var assigned to data "string"
+$filename = 'data/title.txt';
 $todos_array = read_file($filename);
 
 function read_file($filename) {
@@ -11,10 +11,8 @@ function read_file($filename) {
     if(filesize($filename) > 0) {
     	$contents = trim(fread($handle, filesize($filename))); // contents = string
     	$contents_array = explode("\n", $contents);
-    	// var_dump($contents_array);
-    	// echo 'run';
+
     } else {
-    	// echo 'else got run';
     	$contents_array = array();
     }
 
@@ -26,8 +24,6 @@ function write_file_save($filename, $items) {
     fwrite($handle, implode("\n", $items));
     fclose($handle);
 }
-// $_POST["input_item"]; //POST is the array and input_item is the key.
-
 
 if (!empty($_POST["input_item"])) {
 	array_push($todos_array, $_POST["input_item"]);
@@ -83,11 +79,9 @@ if (isset($saved_filename)) {
 		<h1>ToDo List:</h1>
 		<ul>
 
-		<?php
-			foreach ($todos_array as $key => $value) {
-        		echo "<li>{$value} <a href=\"todo_list.php?removeIndex={$key}\">Remove Item</a><br></li>";
-  			}
-		?>
+		  <? foreach ($todos_array as $key => $value) : ?>
+        	<li><?= "{$value} <a href=\"todo_list.php?removeIndex={$key}\">Remove Item</a>"; ?></li>
+  			<? endforeach; ?>
 
 		</ul>
 			<br>
