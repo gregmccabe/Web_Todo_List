@@ -1,0 +1,36 @@
+/*This stylesheet is saved as todo_style.css*/
+
+
+#fancy-header {
+    color: #75001E;
+    font-family: monospace;
+    text-decoration: underline;
+    font-size: x-large;
+}
+.addItem {
+    color: #75001E;
+    font-size: x-large;
+    font-family: monospace;
+}
+ul {
+    width: 275px;
+    margin: auto;
+    text-align: left;
+
+}
+li {
+    list-style: circle;
+
+}
+li a {
+    color:#ff0000;
+
+}
+body {
+    background: url('brickwall.png');
+    text-align: center;
+
+}
+div {
+    color:#000;
+}
