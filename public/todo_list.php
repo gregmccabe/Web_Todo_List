@@ -1,6 +1,13 @@
 
 <?php
 
+$dbc = new PDO('mysql:host=127.0.0.1;dbname=todo_db', 'greg', 'letmein');
+
+$dbc->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+echo $dbc->getAttribute(PDO::ATTR_CONNECTION_STATUS) . "\n";
+
+
 require('filestore.php');
 $open = new Filestore('data/title.txt');
 
@@ -12,10 +19,17 @@ try {
     if (isset($_POST["input_item"])) {
         if ($_POST["input_item"] == "" || strlen($_POST["input_item"] > 240)) {
             throw new UnexpectedTypeException('input_item must be 240 characters or less');
+
         }
         array_push($todos_array, $_POST["input_item"]);
-        $open->write($todos_array);
-        header('Location: /todo_list.php');
+
+        // $open->write($todos_array);
+        $stmt = $dbc->prepare('INSERT INTO todo_list (add_todo) VALUES (:add_todo)');
+        $stmt->bindValue(':add_todo',  $_POST['input_item'],  PDO::PARAM_STR);
+        $stmt->execute();
+        echo "Inserted ID: " . $dbc->lastInsertId() . PHP_EOL;
+
+        // header('Location: /todo_list.php');
         exit;
     }
 
