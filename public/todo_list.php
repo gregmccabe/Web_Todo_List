@@ -1,17 +1,23 @@
 
 <?php
 
+//establish DB Connection
 $dbc = new PDO('mysql:host=127.0.0.1;dbname=todo_db', 'greg', 'letmein');
-
 $dbc->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
 echo $dbc->getAttribute(PDO::ATTR_CONNECTION_STATUS) . "\n";
 
 
-require('filestore.php');
-$open = new Filestore('data/title.txt');
+$limitRecord = 7;
+$pageNumber = 0;
+$offset = 0;
+//limit and offset
+$query = "SELECT * FROM todo_list LIMIT :limitRecord OFFSET :offset";
+$stmt = $dbc->prepare($query);
+$stmt->bindValue(':limitRecord', $limitRecord, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+$todos_array = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$todos_array = $open->read();
 
 class UnexpectedTypeException extends Exception { }
 
@@ -23,13 +29,12 @@ try {
         }
         array_push($todos_array, $_POST["input_item"]);
 
-        // $open->write($todos_array);
+        // item is being add to the DB
         $stmt = $dbc->prepare('INSERT INTO todo_list (add_todo) VALUES (:add_todo)');
         $stmt->bindValue(':add_todo',  $_POST['input_item'],  PDO::PARAM_STR);
         $stmt->execute();
         echo "Inserted ID: " . $dbc->lastInsertId() . PHP_EOL;
-
-        // header('Location: /todo_list.php');
+        header('Location: /todo_list.php');
         exit;
     }
 
@@ -39,7 +44,10 @@ try {
 
 if (isset($_GET['removeIndex'])) {
     unset($todos_array[$_GET['removeIndex']]);
-    $open->write($todos_array);
+    //item being removed from todo DB
+        $stmt = $dbc->prepare('DELETE FROM todo_list WHERE id = :id');
+        $stmt->bindValue(':id',  $_GET['removeIndex'],  PDO::PARAM_STR);
+        $stmt->execute();
     header('Location: /todo_list.php');
     exit;
 }
@@ -83,8 +91,8 @@ if (isset($saved_filename)) {
 		<h1 id="fancy-header">ToDo List:</h1>
 		<div>
         <ul>
-		  <? foreach ($todos_array as $key => $value) : ?>
-        	<li><?= htmlspecialchars(strip_tags($value)); ?> | <a href="todo_list.php?removeIndex=<?= $key?>">Remove Item</a></li>
+		  <? foreach ($todos_array as $item) : ?>
+        	<li><?= htmlspecialchars(strip_tags($item['add_todo'])); ?> | <a href="todo_list.php?removeIndex=<?= $item['id'] ?>">Remove Item</a></li>
   			<? endforeach; ?>
 
 		</ul>
