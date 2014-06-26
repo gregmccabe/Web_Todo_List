@@ -5,32 +5,63 @@
     color: #75001E;
     font-family: monospace;
     text-decoration: underline;
-    font-size: x-large;
+    /*font-size: x-large;*/
+    text-align: left;
 }
 .addItem {
     color: #75001E;
     font-size: x-large;
     font-family: monospace;
+
 }
 ul {
-    width: 275px;
-    margin: auto;
-    text-align: left;
-
+    color: #ccc;
+    width: 250px;
+    margin: left;
+    text-align:left;
 }
 li {
     list-style: circle;
+    list-style-position:inside;
+    line-height: 2em;
+
 
 }
+
+#button {
+    background-color: #ccc;
+}
+
+#upload {
+    background-color: #ccc;
+}
+
 li a {
     color:#ff0000;
 
 }
 body {
-    background: url('brickwall.png');
-    text-align: center;
+    color:white;
+    background: url('game-of-thrones.jpg');
+    text-align:left;
+
 
 }
+
 div {
-    color:#000;
+    color:#75001E;
+}
+
+#file1 {
+    position: relative;
+    left: 1px;
+    padding: 10px 0px;
+}
+
+#remove {
+    text-align: left;
+}
+
+#input_item {
+    background-color: #333;
 }

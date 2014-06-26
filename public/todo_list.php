@@ -39,6 +39,8 @@ $stmt = $dbc->prepare($query);
 $stmt->bindValue(':limitRecord', $limitRecord, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
+
+
 $todos_array = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (!empty($_POST)) {
@@ -112,16 +114,13 @@ $prevPage = $pageNumber - 1;
 
             <ul>
     		<? foreach ($todos_array as $item) : ?>
-        	   <li id="remove"><?= htmlspecialchars(strip_tags($item['add_todo'])); ?> <button class="btn btn-danger btn-xs btn-remove" data-todo="<?= $item['id']; ?>">Remove</button></li>
+        	   <li id="remove"><?= htmlspecialchars(strip_tags($item['add_todo'])); ?><button class="btn btn-danger btn-xs pull-right btn-remove" data-todo="<?= $item['id']; ?>">Remove</button></li>
   			<? endforeach; ?>
     		</ul>
-
             <form id="removeForm" action="/todo_list.php" method="POST">
                 <input class="remove" id="removeId" type="hidden" name="remove" value="">
             </form>
-
             <br>
-
             <? if ($pageNumber > 0) : ?>
             <a href="todo_list.php?page=<?= $prevPage; ?>">&larr; Previous</a>
             <? endif ?>
@@ -130,37 +129,30 @@ $prevPage = $pageNumber - 1;
             <a href="todo_list.php?page=<?= $nextPage; ?>">Next &rarr;</a>
             <? endif ?>
 			<br>
-
             <h1 class="addItem">Add item to your List</h1>
-
             <? if (isset($msg)) : ?>
                 <?="Sorry, your input should be greater than 1 character and less than 240 characters"; ?>
             <? endif; ?>
-
     		<form method="POST" action="/todo_list.php">
     			<p>
     				<label for="input_item">Enter Item</label>
     				<input id="input_item" name="input_item" type="text" placeholder="Enter" autofocus>
     			</p>
     			<p>
-                    <input type="Submit" value= Submit>
+                    <input type="Submit" value="Submit" id="button">
                 </p>
     		</form>
-
     		<br>
-
-    		<h1>Upload File</h1>
-
+    		<h3>Upload File</h3>
             <form method="POST" enctype="multipart/form-data" action="/todo_list.php" role="form">
                 <div class="form-group">
                 	<label for="file1">File to upload:</label>
                 	<input type="file" id="file1" name="file1">
-                    <input type="submit" value="Upload">
+                    <input type="submit" value="Upload" id="upload">
                 </div>
             </form>
         </div>
     <script>
-
         $('.btn-remove').click(function () {
             var todoId = $(this).data('todo');
             if (confirm('Are you sure you want to remove item ' + todoId + '?')) {
@@ -168,7 +160,6 @@ $prevPage = $pageNumber - 1;
                 $('#removeForm').submit();
             };
         });
-
     </script>
     </body>
 </html>
